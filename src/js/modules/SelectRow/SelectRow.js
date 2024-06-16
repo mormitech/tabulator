@@ -32,6 +32,8 @@ export default class SelectRow extends Module {
 
 		//register component functions
 		this.registerComponentFunction("row", "select", this.selectRows.bind(this));
+		this.registerComponentFunction("row", "select_mode2", this.selectRows_mode2.bind(this));
+
 		this.registerComponentFunction("row", "deselect", this.deselectRows.bind(this));
 		this.registerComponentFunction("row", "deselect_mode2", this.deselectRows_mode2.bind(this));
 		this.registerComponentFunction("row", "toggleSelect", this.toggleRow.bind(this));
@@ -719,6 +721,53 @@ export default class SelectRow extends Module {
 			}
 		}
 	}
+
+	//select a number of rows
+	selectRows_mode2(rows) {
+		var changes = [],
+			rowMatch, change;
+
+		switch (typeof rows) {
+			case "undefined":
+				rowMatch = this.table.rowManager.rows;
+				break;
+
+			case "number":
+				rowMatch = this.table.rowManager.findRow(rows);
+				break;
+
+			case "string":
+				rowMatch = this.table.rowManager.findRow(rows);
+
+				if (!rowMatch) {
+					rowMatch = this.table.rowManager.getRows(rows);
+				}
+				break;
+
+			default:
+				rowMatch = rows;
+				break;
+		}
+
+		if (Array.isArray(rowMatch)) {
+			if (rowMatch.length) {
+				rowMatch.forEach((row) => {
+					change = this._selectRow_mode2(row, true, true);
+
+					if (change) {
+						changes.push(change);
+					}
+				});
+
+				this._rowSelectionChanged_mode2(false, changes);
+			}
+		} else {
+			if (rowMatch) {
+				this._selectRow_mode2(rowMatch, false, true);
+			}
+		}
+	}
+
 
 
 
