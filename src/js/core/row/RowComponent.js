@@ -1,93 +1,98 @@
 //public row object
 export default class RowComponent {
 
-	constructor (row){
+	constructor(row) {
 		this._row = row;
 
 		return new Proxy(this, {
-			get: function(target, name, receiver) {
+			get: function (target, name, receiver) {
 				if (typeof target[name] !== "undefined") {
 					return target[name];
-				}else{
+				} else {
 					return target._row.table.componentFunctionBinder.handle("row", target._row, name);
 				}
 			}
 		});
 	}
 
-	getData(transform){
+	getData(transform) {
 		return this._row.getData(transform);
 	}
 
-	getElement(){
+	getElement() {
 		return this._row.getElement();
 	}
 
-	getCells(){
+	getCells() {
 		var cells = [];
 
-		this._row.getCells().forEach(function(cell){
+		this._row.getCells().forEach(function (cell) {
 			cells.push(cell.getComponent());
 		});
 
 		return cells;
 	}
 
-	getCell(column){
+	getCell(column) {
+
 		var cell = this._row.getCell(column);
 		return cell ? cell.getComponent() : false;
 	}
 
-	getIndex(){
+	getIndex() {
 		return this._row.getData("data")[this._row.table.options.index];
 	}
 
-	getPosition(){
+	getPosition() {
 		return this._row.getPosition();
 	}
 
-	watchPosition(callback){
+	generateCells() {
+		this._row.generateCells();
+	}
+
+	watchPosition(callback) {
 		return this._row.watchPosition(callback);
 	}
 
-	delete(){
+	delete() {
 		return this._row.delete();
 	}
 
-	scrollTo(position, ifVisible){
+	scrollTo(position, ifVisible) {
 		return this._row.table.rowManager.scrollToRow(this._row, position, ifVisible);
 	}
 
-	move(to, after){
+	move(to, after) {
 		this._row.moveToRow(to, after);
 	}
 
-	update(data){
+	update(data) {
 		return this._row.updateData(data);
 	}
 
-	normalizeHeight(){
+	normalizeHeight() {
 		this._row.normalizeHeight(true);
 	}
 
-	_getSelf(){
+	_getSelf() {
 		return this._row;
 	}
 
-	reformat(){
+	reformat() {
 		return this._row.reinitialize();
 	}
 
-	getTable(){
+	getTable() {
 		return this._row.table;
 	}
 
-	getNextRow(){
+	getNextRow() {
 		var row = this._row.nextRow();
 		return row ? row.getComponent() : row;
 	}
 
-	getPrevRow(){
+	getPrevRow() {
 		var row = this._row.prevRow();
 		return row ? row.getComponent() : row;
 	}

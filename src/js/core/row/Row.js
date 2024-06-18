@@ -336,7 +336,7 @@ export default class Row extends CoreFeature{
 		if(!this.initialized && this.cells.length === 0){
 			this.generateCells();
 		}
-		
+
 		match = this.cells.find(function(cell){
 			return cell.column === column;
 		});
