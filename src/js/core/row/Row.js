@@ -64,8 +64,6 @@ export default class Row extends CoreFeature {
 		if (!this.initialized) {
 			this.cells = this.table.columnManager.generateCells(this);
 		}
-
-
 	}
 
 	//functions to setup on first render
