@@ -84,6 +84,7 @@ export default class SelectRow extends Module {
 		this.lastClickedRow = false;
 		this.selectPrev = [];
 		this.selectedRows = [];
+		this.selectedRows_mode2 = [];
 
 		if (prevSelected && silent !== true) {
 			this._rowSelectionChanged();
