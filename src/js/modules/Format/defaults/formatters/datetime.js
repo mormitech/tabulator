@@ -5,7 +5,10 @@ export default function(cell, formatterParams, onRendered){
 	var	invalid = typeof formatterParams.invalidPlaceholder !== "undefined" ? formatterParams.invalidPlaceholder : "";
 	var value = cell.getValue();
 
+
 	if(typeof DT != "undefined"){
+
+
 		var newDatetime;
 
 		if(DT.isDateTime(value)){
@@ -23,7 +26,11 @@ export default function(cell, formatterParams, onRendered){
 
 			return newDatetime.toFormat(outputFormat);
 		}else{
+
 			if(invalid === true || !value){
+				if (formatterParams.emptyPlaceholder) {
+					return formatterParams.emptyPlaceholder;
+				}
 				return value;
 			}else if(typeof invalid === "function"){
 				return invalid(value);
