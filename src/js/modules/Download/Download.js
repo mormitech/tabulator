@@ -2,18 +2,18 @@ import Module from '../../core/Module.js';
 
 import defaultDownloaders from './defaults/downloaders.js';
 
-export default class Download extends Module{
+export default class Download extends Module {
 
 	static moduleName = "download";
 
 	//load defaults
 	static downloaders = defaultDownloaders;
 
-	constructor(table){
+	constructor(table) {
 		super(table);
 
-		this.registerTableOption("downloadEncoder", function(data, mimeType){
-			return new Blob([data],{type:mimeType});
+		this.registerTableOption("downloadEncoder", function (data, mimeType) {
+			return new Blob([data], { type: mimeType });
 		}); //function to manipulate download data
 		// this.registerTableOption("downloadReady", undefined); //warn of function deprecation
 		this.registerTableOption("downloadConfig", {}); //download config
@@ -23,22 +23,22 @@ export default class Download extends Module{
 		this.registerColumnOption("titleDownload");
 	}
 
-	initialize(){
+	initialize() {
 		this.deprecatedOptionsCheck();
 
 		this.registerTableFunction("download", this.download.bind(this));
 		this.registerTableFunction("downloadToTab", this.downloadToTab.bind(this));
 	}
 
-	deprecatedOptionsCheck(){
+	deprecatedOptionsCheck() {
 		// this.deprecationCheck("downloadReady", "downloadEncoder");
-	}	
+	}
 
 	///////////////////////////////////
 	///////// Table Functions /////////
 	///////////////////////////////////
 
-	downloadToTab(type, filename, options, active){
+	downloadToTab(type, filename, options, active) {
 		this.download(type, filename, options, active, true);
 	}
 
@@ -47,56 +47,63 @@ export default class Download extends Module{
 	///////////////////////////////////
 
 	//trigger file download
-	download(type, filename, options, range, interceptCallback){
+	download(type, filename, options, range, interceptCallback, callback) {
 		var downloadFunc = false;
 
-		function buildLink(data, mime){
-			if(interceptCallback){
-				if(interceptCallback === true){
+		var response = null;
+
+		function buildLink(data, mime) {
+			if (interceptCallback) {
+				if (interceptCallback === true) {
 					this.triggerDownload(data, mime, type, filename, true);
-				}else{
+				} else {
 					interceptCallback(data);
 				}
 
-			}else{
+			} else {
 				this.triggerDownload(data, mime, type, filename);
 			}
 		}
 
-		if(typeof type == "function"){
+		if (typeof type == "function") {
 			downloadFunc = type;
-		}else{
-			if(Download.downloaders[type]){
+		} else {
+			if (Download.downloaders[type]) {
 				downloadFunc = Download.downloaders[type];
-			}else{
+			} else {
 				console.warn("Download Error - No such download type found: ", type);
 			}
 		}
 
-		if(downloadFunc){
+		if (downloadFunc) {
 			var list = this.generateExportList(range);
 
-			downloadFunc.call(this.table, list , options || {}, buildLink.bind(this));
+			response = downloadFunc.call(this.table, list, options || {}, buildLink.bind(this));
 		}
+
+		if (callback) {
+			callback(response);
+		}
+
 	}
 
-	generateExportList(range){
+	generateExportList(range) {
 		var list = this.table.modules.export.generateExportList(this.table.options.downloadConfig, false, range || this.table.options.downloadRowRange, "download");
 
 		//assign group header formatter
 		var groupHeader = this.table.options.groupHeaderDownload;
 
-		if(groupHeader && !Array.isArray(groupHeader)){
+		if (groupHeader && !Array.isArray(groupHeader)) {
 			groupHeader = [groupHeader];
 		}
 
 		list.forEach((row) => {
 			var group;
 
-			if(row.type === "group"){
+			if (row.type === "group") {
 				group = row.columns[0];
 
-				if(groupHeader && groupHeader[row.indent]){
+				if (groupHeader && groupHeader[row.indent]) {
 					group.value = groupHeader[row.indent](group.value, row.component._group.getRowCount(), row.component._group.getData(), row.component);
 				}
 			}
@@ -105,19 +112,20 @@ export default class Download extends Module{
 		return list;
 	}
 
-	triggerDownload(data, mime, type, filename, newTab){
-		var element = document.createElement('a'),
-		blob = this.table.options.downloadEncoder(data, mime);
+	triggerDownload(data, mime, type, filename, newTab) {
 
-		if(blob){
-			if(newTab){
+		var element = document.createElement('a'),
+			blob = this.table.options.downloadEncoder(data, mime);
+
+		if (blob) {
+			if (newTab) {
 				window.open(window.URL.createObjectURL(blob));
-			}else{
+			} else {
 				filename = filename || "Tabulator." + (typeof type === "function" ? "txt" : type);
-				
-				if(navigator.msSaveOrOpenBlob){
+
+				if (navigator.msSaveOrOpenBlob) {
 					navigator.msSaveOrOpenBlob(blob, filename);
-				}else{
+				} else {
 					element.setAttribute('href', window.URL.createObjectURL(blob));
 
 					//set file title
@@ -134,11 +142,13 @@ export default class Download extends Module{
 			}
 
 			this.dispatchExternal("downloadComplete");
+
+			return blob;
 		}
 	}
 
-	commsReceived(table, action, data){
-		switch(action){
+	commsReceived(table, action, data) {
+		switch (action) {
 			case "intercept":
 				this.download(data.type, "", data.options, data.active, data.intercept);
 				break;

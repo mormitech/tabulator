@@ -1,12 +1,12 @@
-export default function(list, options = {}, setFileContents){
+export default function (list, options = {}, setFileContents) {
 	var delimiter = options.delimiter ? options.delimiter : ",",
-	fileContents = [],
-	headers = [];
+		fileContents = [],
+		headers = [];
 
 	list.forEach((row) => {
 		var item = [];
 
-		switch(row.type){
+		switch (row.type) {
 			case "group":
 				console.warn("Download Warning - CSV downloader cannot process row groups");
 				break;
@@ -17,8 +17,8 @@ export default function(list, options = {}, setFileContents){
 
 			case "header":
 				row.columns.forEach((col, i) => {
-					if(col && col.depth === 1){
-						headers[i] = typeof col.value == "undefined"  || col.value === null ? "" : ('"' + String(col.value).split('"').join('""') + '"');
+					if (col && col.depth === 1) {
+						headers[i] = typeof col.value == "undefined" || col.value === null ? "" : ('"' + String(col.value).split('"').join('""') + '"');
 					}
 				});
 				break;
@@ -26,9 +26,9 @@ export default function(list, options = {}, setFileContents){
 			case "row":
 				row.columns.forEach((col) => {
 
-					if(col){
+					if (col) {
 
-						switch(typeof col.value){
+						switch (typeof col.value) {
 							case "object":
 								col.value = col.value !== null ? JSON.stringify(col.value) : "";
 								break;
@@ -47,15 +47,17 @@ export default function(list, options = {}, setFileContents){
 		}
 	});
 
-	if(headers.length){
+	if (headers.length) {
 		fileContents.unshift(headers.join(delimiter));
 	}
 
 	fileContents = fileContents.join("\n");
 
-	if(options.bom){
+	if (options.bom) {
 		fileContents = "\ufeff" + fileContents;
 	}
 
 	setFileContents(fileContents, "text/csv");
+
+	return fileContents;
 }
