@@ -12,7 +12,8 @@ export default function (list, options, setFileContents) {
 		writeOptions = options.writeOptions || { bookType: 'xlsx', bookSST: true, compression },
 		output;
 
-	writeOptions.type = 'binary';
+	//writeOptions.type = 'binary';
+	writeOptions.type = 'base64';
 
 	workbook.SheetNames = [];
 	workbook.Sheets = {};
@@ -103,5 +104,5 @@ export default function (list, options, setFileContents) {
 
 	setFileContents(s2ab(output), "application/octet-stream");
 
-	return s2ab(output);
+	return output;
 }
