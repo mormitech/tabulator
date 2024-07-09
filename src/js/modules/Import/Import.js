@@ -2,34 +2,35 @@ import Module from '../../core/Module.js';
 
 import defaultImporters from './defaults/importers.js';
 
-export default class Import extends Module{
+export default class Import extends Module {
 
 	static moduleName = "import";
 
 	//load defaults
 	static importers = defaultImporters;
-    
-	constructor(table){
+
+	constructor(table) {
 		super(table);
-        
+
 		this.registerTableOption("importFormat");
 		this.registerTableOption("importReader", "text");
 	}
-    
-	initialize(){
-		this.registerTableFunction("import", this.importFromFile.bind(this));
 
-		if(this.table.options.importFormat){
+	initialize() {
+		this.registerTableFunction("import", this.importFromFile.bind(this));
+		this.registerTableFunction("import_mode2", this.importFromFile_mode2.bind(this));
+
+		if (this.table.options.importFormat) {
 			this.subscribe("data-loading", this.loadDataCheck.bind(this), 10);
 			this.subscribe("data-load", this.loadData.bind(this), 10);
 		}
 	}
 
-	loadDataCheck(data){
+	loadDataCheck(data) {
 		return this.table.options.importFormat && (typeof data === "string" || (Array.isArray(data) && data.length && Array.isArray(data)));
 	}
 
-	loadData(data, params, config, silent, previousData){
+	loadData(data, params, config, silent, previousData) {
 		return this.importData(this.lookupImporter(), data)
 			.then(this.structureData.bind(this))
 			.catch((err) => {
@@ -38,30 +39,30 @@ export default class Import extends Module{
 			});
 	}
 
-	lookupImporter(importFormat){
+	lookupImporter(importFormat) {
 		var importer;
-        
-		if(!importFormat){
+
+		if (!importFormat) {
 			importFormat = this.table.options.importFormat;
 		}
-        
-		if(typeof importFormat === "string"){
+
+		if (typeof importFormat === "string") {
 			importer = Import.importers[importFormat];
-		}else{
+		} else {
 			importer = importFormat;
 		}
 
-		if(!importer){
+		if (!importer) {
 			console.error("Import Error - Importer not found:", importFormat);
 		}
-        
+
 		return importer;
 	}
-    
-	importFromFile(importFormat, extension, importReader){
+
+	importFromFile(importFormat, extension, importReader) {
 		var importer = this.lookupImporter(importFormat);
-        
-		if(importer){
+
+		if (importer) {
 			return this.pickFile(extension, importReader)
 				.then(this.importData.bind(this, importer))
 				.then(this.structureData.bind(this))
@@ -75,21 +76,37 @@ export default class Import extends Module{
 				});
 		}
 	}
-    
-	pickFile(extensions, importReader){
+
+	importFromFile_mode2(importFormat, extension, importReader) {
+		var importer = this.lookupImporter(importFormat);
+
+		if (importer) {
+			return this.pickFile(extension, importReader)
+				.then(this.importData.bind(this, importer))
+				.catch((err) => {
+					this.dispatch("import-error", err);
+					this.dispatchExternal("importError", err);
+
+					console.error("Import Error:", err || "Unable to import file");
+					return Promise.reject(err);
+				});
+		}
+	}
+
+	pickFile(extensions, importReader) {
 		return new Promise((resolve, reject) => {
 			var input = document.createElement("input");
 			input.type = "file";
 			input.accept = extensions;
-            
+
 			input.addEventListener("change", (e) => {
 				var file = input.files[0],
-				reader = new FileReader();
+					reader = new FileReader();
 
 				this.dispatch("import-importing", input.files);
 				this.dispatchExternal("importImporting", input.files);
-                
-				switch(importReader || this.table.options.importReader){
+
+				switch (importReader || this.table.options.importReader) {
 					case "buffer":
 						reader.readAsArrayBuffer(file);
 						break;
@@ -106,50 +123,50 @@ export default class Import extends Module{
 					default:
 						reader.readAsText(file);
 				}
-                  
+
 				reader.onload = (e) => {
 					resolve(reader.result);
 				};
-                
+
 				reader.onerror = (e) => {
 					console.warn("File Load Error - Unable to read file");
 					reject();
 				};
 			});
-			
+
 			this.dispatch("import-choose");
 			this.dispatchExternal("importChoose");
 			input.click();
 		});
 	}
-    
-	importData(importer, fileContents){
+
+	importData(importer, fileContents) {
 		var data = importer.call(this.table, fileContents);
-        
-		if(data instanceof Promise){
+
+		if (data instanceof Promise) {
 			return data;
-		}else{
+		} else {
 			return data ? Promise.resolve(data) : Promise.reject();
 		}
 	}
 
-	structureData(parsedData){
+	structureData(parsedData) {
 		var data = [];
-        
-		if(Array.isArray(parsedData) && parsedData.length && Array.isArray(parsedData[0])){
-			if(this.table.options.autoColumns){
+
+		if (Array.isArray(parsedData) && parsedData.length && Array.isArray(parsedData[0])) {
+			if (this.table.options.autoColumns) {
 				data = this.structureArrayToObject(parsedData);
-			}else{
+			} else {
 				data = this.structureArrayToColumns(parsedData);
 			}
 
 			return data;
-		}else{
+		} else {
 			return parsedData;
 		}
 	}
 
-	structureArrayToObject(parsedData){
+	structureArrayToObject(parsedData) {
 		var columns = parsedData.shift();
 
 		var data = parsedData.map((values) => {
@@ -165,17 +182,17 @@ export default class Import extends Module{
 		return data;
 	}
 
-	structureArrayToColumns(parsedData){
+	structureArrayToColumns(parsedData) {
 		var data = [],
-		columns = this.table.getColumns();
+			columns = this.table.getColumns();
 
 		//remove first row if it is the column names
-		if(columns[0] && parsedData[0][0]){
-			if(columns[0].getDefinition().title === parsedData[0][0]){
+		if (columns[0] && parsedData[0][0]) {
+			if (columns[0].getDefinition().title === parsedData[0][0]) {
 				parsedData.shift();
 			}
 		}
-        
+
 		//convert row arrays to objects
 		parsedData.forEach((rowData) => {
 			var row = {};
@@ -183,7 +200,7 @@ export default class Import extends Module{
 			rowData.forEach((value, index) => {
 				var column = columns[index];
 
-				if(column){
+				if (column) {
 					row[column.getField()] = value;
 				}
 			});
@@ -193,11 +210,11 @@ export default class Import extends Module{
 
 		return data;
 	}
-    
-	setData(data){
+
+	setData(data) {
 		this.dispatch("import-imported", data);
 		this.dispatchExternal("importImported", data);
-		
+
 		return this.table.setData(data);
 	}
 }
