@@ -9,7 +9,7 @@ export default function (input, floop) {
 
 	var response = XLSX.utils.sheet_to_json(sheet, {});
 
-	console.warn("tabulator import -> ", response);
+	//console.warn("tabulator import -> ", response);
 
 	return response;
 }
