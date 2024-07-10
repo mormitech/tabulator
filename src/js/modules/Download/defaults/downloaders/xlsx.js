@@ -31,7 +31,16 @@ export default function (list, options, setFileContents) {
 			row.columns.forEach(function (col, j) {
 
 				if (col) {
-					rowData.push(!(col.value instanceof Date) && typeof col.value === "object" ? JSON.stringify(col.value) : col.value);
+
+					var value = col.value;
+					if (value === null || value === undefined || value === "") {
+						rowData.push(null);
+					}
+					else {
+						rowData.push(!(col.value instanceof Date) && typeof col.value === "object" ? JSON.stringify(col.value) : col.value);
+					}
+
+
 
 					if (col.width > 1 || col.height > -1) {
 						if (col.height > 1 || col.width > 1) {
@@ -43,8 +52,13 @@ export default function (list, options, setFileContents) {
 				}
 			});
 
+			console.warn(rowData);
+
 			rows.push(rowData);
+
 		});
+
+
 
 		//convert rows to worksheet
 		XLSX.utils.sheet_add_aoa(worksheet, rows);
