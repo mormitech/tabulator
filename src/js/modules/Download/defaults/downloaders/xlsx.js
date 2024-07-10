@@ -33,14 +33,16 @@ export default function (list, options, setFileContents) {
 				if (col) {
 
 					var value = col.value;
-					if (value === null || value === undefined || value === "") {
+
+					if (value && typeof value === "object" && value.isLuxonDateTime) {
+						rowData.push(value.toJSDate());
+					}
+					else if (value === null || value === undefined || value === "") {
 						rowData.push(null);
 					}
 					else {
-						rowData.push(!(col.value instanceof Date) && typeof col.value === "object" ? JSON.stringify(col.value) : col.value);
+						rowData.push(!(value instanceof Date) && typeof value === "object" ? JSON.stringify(value) : value);
 					}
-
-
 
 					if (col.width > 1 || col.height > -1) {
 						if (col.height > 1 || col.width > 1) {
