@@ -65,7 +65,7 @@ export default class CellComponent {
 	}
 
 	restoreInitialValue() {
-		this._cell.setValueActual(this._cell.initialValue);
+		this._cell.setValue(this._cell.initialValue, false, false, true);
 	}
 
 	setInitialValue(value) {
