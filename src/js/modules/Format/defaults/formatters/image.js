@@ -1,18 +1,36 @@
-export default function(cell, formatterParams, onRendered){
+export default function (cell, formatterParams, onRendered) {
 	var el = document.createElement("img"),
-	src = cell.getValue();
+		src = cell.getValue();
 
-	if(formatterParams.urlPrefix){
+	if (formatterParams.urlPrefix) {
 		src = formatterParams.urlPrefix + cell.getValue();
 	}
 
-	if(formatterParams.urlSuffix){
+	if (formatterParams.onClick) {
+		el.onclick = (event) => {
+			formatterParams.onClick(event, cell);
+		}
+	}
+
+	if (formatterParams.onMouseDown) {
+		el.onmousedown = (event) => {
+			formatterParams.onMouseDown(event, cell);
+		}
+	}
+
+	if (formatterParams.onMouseUp) {
+		el.onmouseup = (event) => {
+			formatterParams.onMouseUp(event, cell);
+		}
+	}
+
+	if (formatterParams.urlSuffix) {
 		src = src + formatterParams.urlSuffix;
 	}
 
 	el.setAttribute("src", src);
 
-	switch(typeof formatterParams.height){
+	switch (typeof formatterParams.height) {
 		case "number":
 			el.style.height = formatterParams.height + "px";
 			break;
@@ -22,7 +40,7 @@ export default function(cell, formatterParams, onRendered){
 			break;
 	}
 
-	switch(typeof formatterParams.width){
+	switch (typeof formatterParams.width) {
 		case "number":
 			el.style.width = formatterParams.width + "px";
 			break;
@@ -32,7 +50,7 @@ export default function(cell, formatterParams, onRendered){
 			break;
 	}
 
-	el.addEventListener("load", function(){
+	el.addEventListener("load", function () {
 		cell.getRow().normalizeHeight();
 	});
 
