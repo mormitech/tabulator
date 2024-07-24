@@ -1,44 +1,46 @@
-export default function(cell, formatterParams, onRendered){
+export default function (cell, formatterParams, onRendered) {
 	var DT = window.DateTime || luxon.DateTime;
 	var inputFormat = formatterParams.inputFormat || "yyyy-MM-dd HH:mm:ss";
-	var	outputFormat = formatterParams.outputFormat || "dd/MM/yyyy HH:mm:ss";
-	var	invalid = typeof formatterParams.invalidPlaceholder !== "undefined" ? formatterParams.invalidPlaceholder : "";
+	var outputFormat = formatterParams.outputFormat || "dd/MM/yyyy HH:mm:ss";
+	var invalid = typeof formatterParams.invalidPlaceholder !== "undefined" ? formatterParams.invalidPlaceholder : "";
 	var value = cell.getValue();
 
 
-	if(typeof DT != "undefined"){
+	if (typeof DT != "undefined") {
 
 
 		var newDatetime;
 
-		if(DT.isDateTime(value)){
+		if (DT.isDateTime(value)) {
 			newDatetime = value;
-		}else if(inputFormat === "iso"){
+		} else if (inputFormat === "iso") {
 			newDatetime = DT.fromISO(String(value));
-		}else{
+		} else {
 			newDatetime = DT.fromFormat(String(value), inputFormat);
 		}
 
-		if(newDatetime.isValid){
-			if(formatterParams.timezone){
+		if (newDatetime.isValid) {
+			if (formatterParams.timezone) {
 				newDatetime = newDatetime.setZone(formatterParams.timezone);
 			}
 
 			return newDatetime.toFormat(outputFormat);
-		}else{
+		} else {
 
-			if(invalid === true || !value){
+			if (invalid === true || !value) {
+				// <mormi-table add>
 				if (formatterParams.emptyPlaceholder) {
 					return formatterParams.emptyPlaceholder;
 				}
+				// </mormi-table add>
 				return value;
-			}else if(typeof invalid === "function"){
+			} else if (typeof invalid === "function") {
 				return invalid(value);
-			}else{
+			} else {
 				return invalid;
 			}
 		}
-	}else{
+	} else {
 		console.error("Format Error - 'datetime' formatter is dependant on luxon.js");
 	}
 }

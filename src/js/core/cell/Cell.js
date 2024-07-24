@@ -155,14 +155,18 @@ export default class Cell extends CoreFeature {
 		return this.oldValue;
 	}
 
+	// <mormi-table add>
 	update() {
 		if (this.loaded) {
 			this.layoutElement();
 		}
 	}
+	// </mormi-table add>
 
 	//////////////////// Actions ////////////////////
+	// <mormi-table replace> setValue(value, mutate, force) {
 	setValue(value, mutate, force, skipCellEdited) {
+		// </mormi-table replace>
 		var changed = this.setValueProcessData(value, mutate, force);
 
 		if (changed) {
@@ -174,10 +178,9 @@ export default class Cell extends CoreFeature {
 				this.column.definition.cellEdited.call(this.table, this.getComponent());
 			}
 
-			if (!skipCellEdited) {
+			if (!skipCellEdited) { // <mormi-table add />
 				this.dispatchExternal("cellEdited", this.getComponent());
-			}
-
+			} // <mormi-table add />
 
 			if (this.subscribedExternal("dataChanged")) {
 				this.dispatchExternal("dataChanged", this.table.rowManager.getData());

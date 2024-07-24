@@ -68,9 +68,11 @@ export default class CellComponent {
 		this._cell.setValue(this._cell.initialValue, false, false, true);
 	}
 
+	// <mormi-table add>
 	setInitialValue(value) {
 		this._cell.setInitialValue(value);
 	}
+	// </mormi-table add>
 
 	checkHeight() {
 		this._cell.checkHeight();
@@ -84,7 +86,9 @@ export default class CellComponent {
 		return this._cell;
 	}
 
+	// <mormi-table add>
 	update() {
 		this._cell.update();
 	}
+	// </mormi-table add>
 }

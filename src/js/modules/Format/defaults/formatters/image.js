@@ -6,6 +6,7 @@ export default function (cell, formatterParams, onRendered) {
 		src = formatterParams.urlPrefix + cell.getValue();
 	}
 
+	// <mormi-table add>
 	if (formatterParams.onClick) {
 		el.onclick = (event) => {
 			formatterParams.onClick(event, cell);
@@ -23,6 +24,7 @@ export default function (cell, formatterParams, onRendered) {
 			formatterParams.onMouseUp(event, cell);
 		}
 	}
+	// </mormi-table add>
 
 	if (formatterParams.urlSuffix) {
 		src = src + formatterParams.urlSuffix;

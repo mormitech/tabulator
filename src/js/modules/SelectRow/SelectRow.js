@@ -13,7 +13,9 @@ export default class SelectRow extends Module {
 		this.lastClickedRow = false; //last clicked row
 		this.selectPrev = []; //hold previously selected element for drag drop selection
 		this.selectedRows = []; //hold selected rows
+		// <mormi-table add>
 		this.selectedRows_mode2 = []; //hold selected rows
+		// </mormi-table add>
 		this.headerCheckboxElement = null; // hold header select element
 
 		this.registerTableOption("selectableRows", "highlight"); //highlight rows on hover
@@ -26,18 +28,26 @@ export default class SelectRow extends Module {
 		this.registerTableFunction("deselectRow", this.deselectRows.bind(this));
 		this.registerTableFunction("toggleSelectRow", this.toggleRow.bind(this));
 		this.registerTableFunction("getSelectedRows", this.getSelectedRows.bind(this));
+		// <mormi-table add>
 		this.registerTableFunction("getSelectedRows_mode2", this.getSelectedRows_mode2.bind(this));
+		// </mormi-table add>
 
 		this.registerTableFunction("getSelectedData", this.getSelectedData.bind(this));
 
 		//register component functions
 		this.registerComponentFunction("row", "select", this.selectRows.bind(this));
+		// <mormi-table add>
 		this.registerComponentFunction("row", "select_mode2", this.selectRows_mode2.bind(this));
+		// </mormi-table add>
 
 		this.registerComponentFunction("row", "deselect", this.deselectRows.bind(this));
+		// <mormi-table add>
 		this.registerComponentFunction("row", "deselect_mode2", this.deselectRows_mode2.bind(this));
+		// </mormi-table add>
 		this.registerComponentFunction("row", "toggleSelect", this.toggleRow.bind(this));
+		// <mormi-table add>
 		this.registerComponentFunction("row", "toggleSelect_mode2", this.toggleRow_mode2.bind(this));
+		// </mormi-table add>
 		this.registerComponentFunction("row", "isSelected", this.isRowSelected.bind(this));
 	}
 
@@ -62,11 +72,13 @@ export default class SelectRow extends Module {
 	}
 
 	deprecatedOptionsCheck() {
+		// <mormi-table remove>
 		// this.deprecationCheck("selectable", "selectableRows", true);
 		// this.deprecationCheck("selectableRollingSelection", "selectableRowsRollingSelection", true);
 		// this.deprecationCheck("selectableRangeMode", "selectableRowsRangeMode", true);
 		// this.deprecationCheck("selectablePersistence", "selectableRowsPersistence", true);
 		// this.deprecationCheck("selectableCheck", "selectableRowsCheck", true);
+		// </mormi-table remove>
 	}
 
 	rowRetrieve(type, prevValue) {
@@ -509,7 +521,7 @@ export default class SelectRow extends Module {
 
 
 
-
+	// <mormi-table add>
 	toggleRow_mode2(row) {
 		if (this.checkRowSelectability(row)) {
 			if (row.modules.select && row.modules.select.selected_mode2) {
@@ -768,6 +780,7 @@ export default class SelectRow extends Module {
 			}
 		}
 	}
+	// </mormi-table add>
 
 
 

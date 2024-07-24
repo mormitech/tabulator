@@ -59,5 +59,7 @@ export default function (list, options = {}, setFileContents) {
 
 	setFileContents(fileContents, "text/csv");
 
+	// <mormi-table add>
 	return fileContents;
+	// </mormi-table add>
 }

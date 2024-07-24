@@ -50,7 +50,9 @@ export default class Download extends Module {
 	download(type, filename, options, range, interceptCallback, callback) {
 		var downloadFunc = false;
 
+		// <mormi-table add>
 		var response = null;
+		// </mormi-table add>
 
 		function buildLink(data, mime) {
 			if (interceptCallback) {
@@ -78,12 +80,18 @@ export default class Download extends Module {
 		if (downloadFunc) {
 			var list = this.generateExportList(range);
 
+			// <mormi-table replace from>
+			// downloadFunc.call(this.table, list , options || {}, buildLink.bind(this));
+			// <mormi-table replace to>
 			response = downloadFunc.call(this.table, list, options || {}, buildLink.bind(this));
+			// <mormi-table replace>
 		}
 
+		// <mormi-table add>
 		if (callback) {
 			callback(response);
 		}
+		// </mormi-table add>
 
 	}
 
@@ -143,7 +151,9 @@ export default class Download extends Module {
 
 			this.dispatchExternal("downloadComplete");
 
+			// <mormi-table add>
 			return blob;
+			// </mormi-table add>
 		}
 	}
 

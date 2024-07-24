@@ -231,7 +231,7 @@ export default class Page extends Module {
 				element.clientHeight * 2;
 
 			if (diff < margin) {
-				this.nextPage().catch(() => {}); //consume the exception thrown when on the last page
+				this.nextPage().catch(() => { }); //consume the exception thrown when on the last page
 			}
 		}
 	}
@@ -554,7 +554,9 @@ export default class Page extends Module {
 				return this.setPage(this.max);
 		}
 
+		// <mormi-table add>
 		this.dispatchExternal("pageBeforeLoaded");
+		// </mormi-table add>
 
 		page = parseInt(page);
 
@@ -567,8 +569,8 @@ export default class Page extends Module {
 		} else {
 			console.warn(
 				"Pagination Error - Requested page is out of range of 1 - " +
-					this.max +
-					":",
+				this.max +
+				":",
 				page
 			);
 			return Promise.reject();
@@ -725,7 +727,10 @@ export default class Page extends Module {
 
 	//previous page
 	previousPage() {
+
+		// <mormi-table add>
 		this.dispatchExternal("pageBeforeLoaded");
+		// </mormi-table add>
 
 		if (this.page > 1) {
 			this.page--;
@@ -744,7 +749,9 @@ export default class Page extends Module {
 
 	//next page
 	nextPage() {
+		// <mormi-table add>
 		this.dispatchExternal("pageBeforeLoaded");
+		// </mormi-table add>
 		if (this.page < this.max) {
 			this.page++;
 
@@ -755,8 +762,8 @@ export default class Page extends Module {
 			if (!this.progressiveLoad) {
 				console.warn(
 					"Pagination Error - Next page would be greater than maximum page of " +
-						this.max +
-						":",
+					this.max +
+					":",
 					this.max + 1
 				);
 			}
@@ -876,8 +883,8 @@ export default class Page extends Module {
 		if (typeof data.last_page === "undefined") {
 			console.warn(
 				"Remote Pagination Error - Server response missing '" +
-					(this.options("dataReceiveParams").last_page || "last_page") +
-					"' property"
+				(this.options("dataReceiveParams").last_page || "last_page") +
+				"' property"
 			);
 		}
 
@@ -888,7 +895,7 @@ export default class Page extends Module {
 				typeof data.last_row !== "undefined"
 					? data.last_row
 					: data.last_page * this.size -
-					  (this.page == data.last_page ? this.size - data.data.length : 0);
+					(this.page == data.last_page ? this.size - data.data.length : 0);
 
 			if (this.progressiveLoad) {
 				switch (this.mode) {
@@ -945,8 +952,8 @@ export default class Page extends Module {
 		} else {
 			console.warn(
 				"Remote Pagination Error - Server response missing '" +
-					(this.options("dataReceiveParams").data || "data") +
-					"' property"
+				(this.options("dataReceiveParams").data || "data") +
+				"' property"
 			);
 		}
 

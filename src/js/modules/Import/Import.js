@@ -77,6 +77,7 @@ export default class Import extends Module {
 		}
 	}
 
+	// <mormi-table add>
 	importFromFile_mode2(importFormat, extension, importReader) {
 		var importer = this.lookupImporter(importFormat);
 
@@ -92,6 +93,7 @@ export default class Import extends Module {
 				});
 		}
 	}
+	// </mormi-table add>
 
 	pickFile(extensions, importReader) {
 		return new Promise((resolve, reject) => {

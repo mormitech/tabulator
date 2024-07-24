@@ -309,6 +309,7 @@ export default class RowManager extends CoreFeature {
 		this.displayRowsCount = 0;
 	}
 
+	// <mormi-table add>
 	getScrollTop() {
 		var scrollHeight = this.element.scrollHeight;
 		var positionInfo = this.element.getBoundingClientRect();
@@ -325,6 +326,7 @@ export default class RowManager extends CoreFeature {
 
 		this.element.scrollTop = scrollTop;
 	}
+	// </mormi-table add>
 
 	deleteRow(row, blockRedraw) {
 		var allIndex = this.rows.indexOf(row),
@@ -750,7 +752,7 @@ export default class RowManager extends CoreFeature {
 						((this.redrawBlockRestoreConfig.stage === stage &&
 							index < this.redrawBlockRestoreConfig.index) ||
 							cascadeOrder.indexOf(stage) <
-								cascadeOrder.indexOf(this.redrawBlockRestoreConfig.stage)))
+							cascadeOrder.indexOf(this.redrawBlockRestoreConfig.stage)))
 				) {
 					this.redrawBlockRestoreConfig = {
 						handler: handler,
@@ -1152,12 +1154,12 @@ export default class RowManager extends CoreFeature {
 		if (this.renderer.verticalFillMode === "fill") {
 			let otherHeight = Math.floor(
 				this.table.columnManager.getElement().getBoundingClientRect().height +
-					(this.table.footerManager &&
+				(this.table.footerManager &&
 					this.table.footerManager.active &&
 					!this.table.footerManager.external
-						? this.table.footerManager.getElement().getBoundingClientRect()
-								.height
-						: 0)
+					? this.table.footerManager.getElement().getBoundingClientRect()
+						.height
+					: 0)
 			);
 
 			if (this.fixedHeight) {

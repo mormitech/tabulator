@@ -843,7 +843,12 @@ export default class Edit {
 				if (contents instanceof HTMLElement) {
 					el.appendChild(contents);
 				} else {
+					// <mormi-table replace from>
+					// el.innerHTML = contents;
+					// <mormi-table replace to>
 					el.innerHTML = contents ?? "&nbsp;";
+					// </mormi-table replace>
+
 				}
 
 				if (item.group) {

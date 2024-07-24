@@ -379,9 +379,9 @@ class Tabulator extends ModuleBinder {
 
 			console.warn(
 				"Table Not Initialized - Calling the " +
-					func +
-					" function before the table is initialized may result in inconsistent behavior, Please wait for the `tableBuilt` event before calling this function." +
-					(msg ? " " + msg : "")
+				func +
+				" function before the table is initialized may result in inconsistent behavior, Please wait for the `tableBuilt` event before calling this function." +
+				(msg ? " " + msg : "")
 			);
 		}
 
@@ -436,6 +436,7 @@ class Tabulator extends ModuleBinder {
 		return this.rowManager.getData(active);
 	}
 
+	// <mormi-table add>
 	getScrollTop() {
 		return this.rowManager.getScrollTop();
 	}
@@ -443,6 +444,7 @@ class Tabulator extends ModuleBinder {
 	setScrollTop(newScrollTop) {
 		return this.rowManager.setScrollTop(newScrollTop);
 	}
+	// </mormi-table add>
 
 	//get table data array count
 	getDataCount(active) {
@@ -694,7 +696,7 @@ class Tabulator extends ModuleBinder {
 		return;
 	}
 
-	setScrollPosition() {}
+	setScrollPosition() { }
 
 	//scroll to row in DOM
 	scrollToRow(index, position, ifVisible) {

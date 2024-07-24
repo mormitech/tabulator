@@ -4,6 +4,11 @@ export default {
 			precision = typeof calcParams.precision !== "undefined" ? calcParams.precision : 2;
 
 		if (values.length) {
+
+			// <mormi-table replace from>
+			// output = values.reduce(function(sum, value){
+			// 	return Number(sum) + Number(value);		
+			// <mormi-table replace to>
 			const initialValue = 0;
 			var nullCount = 0;
 			output = values.reduce(function (sum, value) {
@@ -20,6 +25,10 @@ export default {
 			output = output / (values.length - nullCount);
 
 			output = precision !== false ? output.toFixed(precision) : output;
+			// </mormi-table replace>
+
+
+
 		}
 
 		return parseFloat(output).toString();

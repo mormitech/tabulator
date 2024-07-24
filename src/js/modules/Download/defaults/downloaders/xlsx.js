@@ -12,8 +12,11 @@ export default function (list, options, setFileContents) {
 		writeOptions = options.writeOptions || { bookType: 'xlsx', bookSST: true, compression },
 		output;
 
+	// <mormi-table replace from>	
 	//writeOptions.type = 'binary';
+	// <mormi-table replace to>	
 	writeOptions.type = 'base64';
+	// </mormi-table replace>	
 
 	workbook.SheetNames = [];
 	workbook.Sheets = {};
@@ -31,7 +34,9 @@ export default function (list, options, setFileContents) {
 			row.columns.forEach(function (col, j) {
 
 				if (col) {
-
+					// <mormi-table replace from>	
+					// rowData.push(!(col.value instanceof Date) && typeof col.value === "object" ? JSON.stringify(col.value) : col.value);
+					// <mormi-table replace to>	
 					var value = col.value;
 
 					if (value && typeof value === "object" && value.isLuxonDateTime) {
@@ -43,6 +48,7 @@ export default function (list, options, setFileContents) {
 					else {
 						rowData.push(!(value instanceof Date) && typeof value === "object" ? JSON.stringify(value) : value);
 					}
+					// <mormi-table replace>	
 
 					if (col.width > 1 || col.height > -1) {
 						if (col.height > 1 || col.width > 1) {
@@ -54,13 +60,8 @@ export default function (list, options, setFileContents) {
 				}
 			});
 
-			console.warn(rowData);
-
 			rows.push(rowData);
-
 		});
-
-
 
 		//convert rows to worksheet
 		XLSX.utils.sheet_add_aoa(worksheet, rows);
@@ -120,5 +121,7 @@ export default function (list, options, setFileContents) {
 
 	setFileContents(s2ab(output), "application/octet-stream");
 
+	// <mormi-table add>
 	return output;
+	// </mormi-table add>
 }
