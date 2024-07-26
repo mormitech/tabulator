@@ -129,6 +129,23 @@ export default class Cell extends CoreFeature {
 			default:
 				this.element.innerHTML = val;
 		}
+
+		if (this.table.options.cellAddedElements) {
+			this.table.options.cellAddedElements(this.component).forEach(cellAddedElement => {
+				this.element.appendChild(cellAddedElement);
+			});
+		}
+
+		if (this.table.options.cellCssClasses) {
+			let cssClasses = this.table.options.cellCssClasses(this.component);
+			if (cssClasses !== null && cssClasses !== undefined && cssClasses.length > 0) {
+				cssClasses.forEach(cssClass => {
+					this.element.classList.add(cssClass);
+				});
+			}
+		}
+
+
 	}
 
 	cellRendered() {
