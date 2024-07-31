@@ -25,6 +25,8 @@ export default class Row extends CoreFeature {
 
 		this.created = false;
 
+		this.metadata = {}
+
 		this.setData(data);
 	}
 

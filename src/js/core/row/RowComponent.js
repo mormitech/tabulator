@@ -96,4 +96,12 @@ export default class RowComponent {
 		var row = this._row.prevRow();
 		return row ? row.getComponent() : row;
 	}
+
+	setMetadata(key, value) {
+		this._row.metadata[key] = value;
+	}
+
+	getMetadata(key) {
+		return this._row.metadata[key];
+	}
 }
