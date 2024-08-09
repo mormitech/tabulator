@@ -10,7 +10,6 @@ export default function (cell, onRendered, success, cancel, editorParams) {
 		input = document.createElement("input");
 
 	input.type = "datetime-local";
-	input.step = 1;
 	input.style.padding = "4px";
 	input.style.width = "100%";
 	input.style.boxSizing = "border-box";
