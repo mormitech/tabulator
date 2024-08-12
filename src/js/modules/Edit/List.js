@@ -511,7 +511,16 @@ export default class Edit {
 		this.filtered = false;
 
 		if (this.params.values) {
-			values = this.params.values;
+			//values = this.params.values;
+			values = [...this.params.values];
+			if (this.params.addCurrentValue) {
+				let cellValue = this.cell.getValue();
+				let existingValue = values.find(v => v.value == cellValue);
+
+				if (!values.includes(cellValue) && !existingValue) {
+					values.push(this.cell.getValue());
+				}
+			}
 		} else if (this.params.valuesURL) {
 			values = this._ajaxRequest(this.params.valuesURL, this.input.value);
 		} else {
