@@ -22,7 +22,12 @@ export default class ComponentFunctionBinder{
 		if(this.bindings[type] && this.bindings[type][name] && typeof this.bindings[type][name].bind === 'function'){
 			return this.bindings[type][name].bind(null, component);
 		}else{
-			if(name !== "then" && typeof name === "string" && !name.startsWith("_")){
+			if(name !== "then" 
+				&& typeof name === "string" 
+				&& !name.startsWith("_")
+				&& !name.startsWith("toJSON")
+			
+			){
 				if(this.table.options.debugInvalidComponentFuncs){
 					console.error("The " + type + " component does not have a " + name + " function, have you checked that you have the correct Tabulator module installed?");
 				}
