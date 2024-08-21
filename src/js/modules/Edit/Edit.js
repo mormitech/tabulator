@@ -580,6 +580,11 @@ export default class Edit extends Module {
 				this.options("editTriggerEvent") === "click"
 			) {
 				element.addEventListener("click", function (e) {
+
+					if (element.classList.contains("ctrl-readonly") && e.ctrlKey) {
+						return;
+					}
+
 					if (!element.classList.contains("tabulator-editing")) {
 						element.focus({ preventScroll: true });
 						self.edit(cell, e, false);
@@ -686,7 +691,7 @@ export default class Edit extends Module {
 	edit(cell, e, forceEdit) {
 		var self = this,
 			allowEdit = true,
-			rendered = function () {},
+			rendered = function () { },
 			element = cell.getElement(),
 			editFinished = false,
 			cellEditor,
