@@ -658,9 +658,25 @@ export default class Edit {
 	}
 
 	_parseListItem(option, data, level) {
+
 		var item = {};
 
-		if (option.options) {
+		// <mormi-table add> - MT-245
+		if (!option) {
+			item = {
+				label: "",
+				value: null,
+				itemParams: null,
+				elementAttributes: null,
+				element: false,
+				selected: false,
+				visible: true,
+				level: level,
+				original: null,
+			};
+		}
+		// </mormi-table add> - MT-245
+		else if (option.options) {
 			item = this._parseListGroup(option, level + 1);
 		} else {
 			item = {
