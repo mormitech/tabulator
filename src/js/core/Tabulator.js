@@ -444,6 +444,15 @@ class Tabulator extends ModuleBinder {
 	setScrollTop(newScrollTop) {
 		return this.rowManager.setScrollTop(newScrollTop);
 	}
+
+	getScrollLeft() {
+		return this.rowManager.getScrollLeft();
+	}
+
+	setScrollLeft(newScrollLeft) {
+		return this.rowManager.setScrollLeft(newScrollLeft);
+	}
+
 	// </mormi-table add>
 
 	//get table data array count

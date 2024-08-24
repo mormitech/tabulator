@@ -341,7 +341,7 @@ export default class RowManager extends CoreFeature {
 		//var positionInfo = this.element.getBoundingClientRect();
 		//var elementHeight = positionInfo.height;
 
-		this.element.scrollTop = scrollLeft;
+		this.element.scrollLeft = scrollLeft;
 	}
 	// </mormi-table add>
 
