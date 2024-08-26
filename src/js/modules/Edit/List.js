@@ -680,7 +680,7 @@ export default class Edit {
 			item = this._parseListGroup(option, level + 1);
 		} else {
 			item = {
-				label: option.label,
+				label: option.label /* <mormi-table add - MT-252> */ ?? null /* </mormi-table add> */,
 				value: option.value,
 				itemParams: option.itemParams,
 				elementAttributes: option.elementAttributes,
