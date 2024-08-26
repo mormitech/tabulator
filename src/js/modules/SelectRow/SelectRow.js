@@ -14,7 +14,8 @@ export default class SelectRow extends Module {
 		this.selectPrev = []; //hold previously selected element for drag drop selection
 		this.selectedRows = []; //hold selected rows
 		// <mormi-table add>
-		this.selectedRows_mode2 = []; //hold selected rows
+		this.selectedRows_mode2 = [];
+		this.selectedRows_mode3 = [];
 		// </mormi-table add>
 		this.headerCheckboxElement = null; // hold header select element
 
@@ -30,6 +31,7 @@ export default class SelectRow extends Module {
 		this.registerTableFunction("getSelectedRows", this.getSelectedRows.bind(this));
 		// <mormi-table add>
 		this.registerTableFunction("getSelectedRows_mode2", this.getSelectedRows_mode2.bind(this));
+		this.registerTableFunction("getSelectedRows_mode3", this.getSelectedRows_mode3.bind(this));
 		// </mormi-table add>
 
 		this.registerTableFunction("getSelectedData", this.getSelectedData.bind(this));
@@ -38,15 +40,18 @@ export default class SelectRow extends Module {
 		this.registerComponentFunction("row", "select", this.selectRows.bind(this));
 		// <mormi-table add>
 		this.registerComponentFunction("row", "select_mode2", this.selectRows_mode2.bind(this));
+		this.registerComponentFunction("row", "select_mode3", this.selectRows_mode3.bind(this));
 		// </mormi-table add>
 
 		this.registerComponentFunction("row", "deselect", this.deselectRows.bind(this));
 		// <mormi-table add>
 		this.registerComponentFunction("row", "deselect_mode2", this.deselectRows_mode2.bind(this));
+		this.registerComponentFunction("row", "deselect_mode3", this.deselectRows_mode3.bind(this));
 		// </mormi-table add>
 		this.registerComponentFunction("row", "toggleSelect", this.toggleRow.bind(this));
 		// <mormi-table add>
 		this.registerComponentFunction("row", "toggleSelect_mode2", this.toggleRow_mode2.bind(this));
+		this.registerComponentFunction("row", "toggleSelect_mode3", this.toggleRow_mode3.bind(this));
 		// </mormi-table add>
 		this.registerComponentFunction("row", "isSelected", this.isRowSelected.bind(this));
 	}
@@ -97,6 +102,7 @@ export default class SelectRow extends Module {
 		this.selectPrev = [];
 		this.selectedRows = [];
 		this.selectedRows_mode2 = [];
+		this.selectedRows_mode3 = [];
 
 		if (prevSelected && silent !== true) {
 			this._rowSelectionChanged();
@@ -522,6 +528,7 @@ export default class SelectRow extends Module {
 
 
 	// <mormi-table add>
+
 	toggleRow_mode2(row) {
 		if (this.checkRowSelectability(row)) {
 			if (row.modules.select && row.modules.select.selected_mode2) {
@@ -780,6 +787,278 @@ export default class SelectRow extends Module {
 			}
 		}
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+	toggleRow_mode3(row) {
+		if (this.checkRowSelectability(row)) {
+			if (row.modules.select && row.modules.select.selected_mode3) {
+				this._deselectRow_mode3(row);
+			} else {
+				this._selectRow_mode3(row);
+			}
+		}
+	}
+
+	childRowSelection_mode3(row, select) {
+		var children = this.table.modules.dataTree.getChildren(row, true, true);
+
+		if (select) {
+			for (let child of children) {
+				this._selectRow_mode3(child, true);
+			}
+		} else {
+			for (let child of children) {
+				this._deselectRow_mode3(child, true);
+			}
+		}
+	}
+
+	_rowSelectionChanged_mode3(silent, selected = [], deselected = []) {
+		if (this.headerCheckboxElement_mode3) {
+			if (this.selectedRows_mode3.length === 0) {
+				this.headerCheckboxElement_mode3.checked = false;
+				this.headerCheckboxElement_mode3.indeterminate = false;
+			} else if (this.table.rowManager.rows.length === this.selectedRows_mode3.length) {
+				this.headerCheckboxElement_mode3.checked = true;
+				this.headerCheckboxElement_mode3.indeterminate = false;
+			} else {
+				this.headerCheckboxElement_mode3.indeterminate = true;
+				this.headerCheckboxElement_mode3.checked = false;
+			}
+		}
+
+		if (!silent) {
+			if (!Array.isArray(selected)) {
+				selected = [selected];
+			}
+
+			selected = selected.map(row => row.getComponent());
+
+			if (!Array.isArray(deselected)) {
+				deselected = [deselected];
+			}
+
+			deselected = deselected.map(row => row.getComponent());
+
+			this.dispatchExternal("rowSelectionChanged_mode3", this.getSelectedData_mode3(), this.getSelectedRows_mode3(), selected, deselected);
+		}
+	}
+
+	getSelectedRows_mode3() {
+		var rows = [];
+
+		this.selectedRows_mode3.forEach(function (row) {
+			rows.push(row.getComponent());
+		});
+
+		return rows;
+	}
+
+	getSelectedData_mode3() {
+		var data = [];
+
+		this.selectedRows_mode3.forEach(function (row) {
+			data.push(row.getData());
+		});
+
+		return data;
+	}
+
+	//select an individual row
+	_selectRow_mode3(rowInfo, silent, force) {
+		//handle max row count
+		if (!isNaN(this.table.options.selectableRows) && this.table.options.selectableRows !== true && !force) {
+			if (this.selectedRows_mode3.length >= this.table.options.selectableRows) {
+				if (this.table.options.selectableRowsRollingSelection) {
+					this._deselectRow_mode3(this.selectedRows_mode3[0]);
+				} else {
+					return false;
+				}
+			}
+		}
+
+		var row = this.table.rowManager.findRow(rowInfo);
+
+		if (row) {
+			if (this.selectedRows_mode3.indexOf(row) == -1) {
+				row.getElement().classList.add("tabulator-selected-mode3");
+				if (!row.modules.select) {
+					row.modules.select = {};
+				}
+
+				row.modules.select.selected_mode3 = true;
+				if (row.modules.select.checkboxEl_mode3) {
+					row.modules.select.checkboxEl_mode3.checked = true;
+				}
+
+				this.selectedRows_mode3.push(row);
+
+				if (this.table.options.dataTreeSelectPropagate) {
+					this.childRowSelection_mode3(row, true);
+				}
+
+				this.dispatchExternal("rowSelected_mode3", row.getComponent());
+
+				this._rowSelectionChanged_mode3(silent, row);
+
+				return row;
+			}
+		} else {
+			if (!silent) {
+				console.warn("Selection Error - No such row found, ignoring selection:" + rowInfo);
+			}
+		}
+	}
+
+	//deselect an individual row
+	_deselectRow_mode3(rowInfo, silent) {
+		var self = this,
+			row = self.table.rowManager.findRow(rowInfo),
+			index, element;
+
+		if (row) {
+			index = self.selectedRows_mode3.findIndex(function (selectedRow) {
+				return selectedRow == row;
+			});
+
+			if (index > -1) {
+
+				element = row.getElement();
+
+				if (element) {
+					element.classList.remove("tabulator-selected-mode3");
+				}
+
+				if (!row.modules.select) {
+					row.modules.select = {};
+				}
+
+				row.modules.select.selected_mode3 = false;
+				if (row.modules.select.checkboxEl_mode3) {
+					row.modules.select.checkboxEl_mode3.checked = false;
+				}
+				self.selectedRows_mode3.splice(index, 1);
+
+				if (this.table.options.dataTreeSelectPropagate) {
+					this.childRowSelection_mode3(row, false);
+				}
+
+				this.dispatchExternal("rowDeselected_mode3", row.getComponent());
+
+				self._rowSelectionChanged_mode3(silent, undefined, row);
+
+				return row;
+			}
+		} else {
+			if (!silent) {
+				console.warn("Deselection Error - No such row found, ignoring selection:" + rowInfo);
+			}
+		}
+	}
+
+	//deselect a number of rows
+	deselectRows_mode3(rows, silent) {
+		var changes = [],
+			rowMatch, change;
+
+		switch (typeof rows) {
+			case "undefined":
+				rowMatch = Object.assign([], this.selectedRows);
+				break;
+
+			case "number":
+				rowMatch = this.table.rowManager.findRow(rows);
+				break;
+
+			case "string":
+				rowMatch = this.table.rowManager.findRow(rows);
+
+				if (!rowMatch) {
+					rowMatch = this.table.rowManager.getRows(rows);
+				}
+				break;
+
+			default:
+				rowMatch = rows;
+				break;
+		}
+
+		if (Array.isArray(rowMatch)) {
+			if (rowMatch.length) {
+				rowMatch.forEach((row) => {
+					change = this._deselectRow_mode3(row, true, true);
+
+					if (change) {
+						changes.push(change);
+					}
+				});
+
+				this._rowSelectionChanged_mode3(silent, [], changes);
+			}
+		} else {
+			if (rowMatch) {
+				this._deselectRow_mode3(rowMatch, silent, true);
+			}
+		}
+	}
+
+	//select a number of rows
+	selectRows_mode3(rows) {
+		var changes = [],
+			rowMatch, change;
+
+		switch (typeof rows) {
+			case "undefined":
+				rowMatch = this.table.rowManager.rows;
+				break;
+
+			case "number":
+				rowMatch = this.table.rowManager.findRow(rows);
+				break;
+
+			case "string":
+				rowMatch = this.table.rowManager.findRow(rows);
+
+				if (!rowMatch) {
+					rowMatch = this.table.rowManager.getRows(rows);
+				}
+				break;
+
+			default:
+				rowMatch = rows;
+				break;
+		}
+
+		if (Array.isArray(rowMatch)) {
+			if (rowMatch.length) {
+				rowMatch.forEach((row) => {
+					change = this._selectRow_mode3(row, true, true);
+
+					if (change) {
+						changes.push(change);
+					}
+				});
+
+				this._rowSelectionChanged_mode3(false, changes);
+			}
+		} else {
+			if (rowMatch) {
+				this._selectRow_mode3(rowMatch, false, true);
+			}
+		}
+	}
+
+
 	// </mormi-table add>
 
 
