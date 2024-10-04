@@ -1,19 +1,19 @@
 //draggable progress bar
-export default function(cell, onRendered, success, cancel, editorParams){
+export default function (cell, onRendered, success, cancel, editorParams) {
 	var element = cell.getElement(),
-	max = typeof editorParams.max === "undefined" ? ((element.getElementsByTagName("div")[0] && element.getElementsByTagName("div")[0].getAttribute("max")) || 100) : editorParams.max,
-	min = typeof editorParams.min === "undefined" ? ((element.getElementsByTagName("div")[0] && element.getElementsByTagName("div")[0].getAttribute("min")) || 0) : editorParams.min,
-	percent = (max - min) / 100,
-	value = cell.getValue() || 0,
-	handle = document.createElement("div"),
-	bar = document.createElement("div"),
-	mouseDrag, mouseDragWidth;
+		max = typeof editorParams.max === "undefined" ? ((element.getElementsByTagName("div")[0] && element.getElementsByTagName("div")[0].getAttribute("max")) || 100) : editorParams.max,
+		min = typeof editorParams.min === "undefined" ? ((element.getElementsByTagName("div")[0] && element.getElementsByTagName("div")[0].getAttribute("min")) || 0) : editorParams.min,
+		percent = (max - min) / 100,
+		value = cell.getValue() || 0,
+		handle = document.createElement("div"),
+		bar = document.createElement("div"),
+		mouseDrag, mouseDragWidth;
 
 	//set new value
-	function updateValue(){
+	function updateValue() {
 		var style = window.getComputedStyle(element, null);
 
-		var calcVal = (percent * Math.round(bar.offsetWidth / ((element.clientWidth - parseInt(style.getPropertyValue("padding-left")) - parseInt(style.getPropertyValue("padding-right")))/100))) + min;
+		var calcVal = (percent * Math.round(bar.offsetWidth / ((element.clientWidth - parseInt(style.getPropertyValue("padding-left")) - parseInt(style.getPropertyValue("padding-right"))) / 100))) + min;
 		success(calcVal);
 		element.setAttribute("aria-valuenow", calcVal);
 		element.setAttribute("aria-label", value);
@@ -39,12 +39,12 @@ export default function(cell, onRendered, success, cancel, editorParams){
 	bar.style.maxWidth = "100%";
 	bar.style.minWidth = "0%";
 
-	if(editorParams.elementAttributes && typeof editorParams.elementAttributes == "object"){
-		for (let key in editorParams.elementAttributes){
-			if(key.charAt(0) == "+"){
+	if (editorParams.elementAttributes && typeof editorParams.elementAttributes == "object") {
+		for (let key in editorParams.elementAttributes) {
+			if (key.charAt(0) == "+") {
 				key = key.slice(1);
 				bar.setAttribute(key, bar.getAttribute(key) + editorParams.elementAttributes["+" + key]);
-			}else{
+			} else {
 				bar.setAttribute(key, editorParams.elementAttributes[key]);
 			}
 		}
@@ -67,23 +67,23 @@ export default function(cell, onRendered, success, cancel, editorParams){
 
 	bar.appendChild(handle);
 
-	handle.addEventListener("mousedown", function(e){
+	handle.addEventListener("mousedown", function (e) {
 		mouseDrag = e.screenX;
 		mouseDragWidth = bar.offsetWidth;
 	});
 
-	handle.addEventListener("mouseover", function(){
+	handle.addEventListener("mouseover", function () {
 		handle.style.cursor = "ew-resize";
 	});
 
-	element.addEventListener("mousemove", function(e){
-		if(mouseDrag){
+	element.addEventListener("mousemove", function (e) {
+		if (mouseDrag) {
 			bar.style.width = (mouseDragWidth + e.screenX - mouseDrag) + "px";
 		}
 	});
 
-	element.addEventListener("mouseup", function(e){
-		if(mouseDrag){
+	element.addEventListener("mouseup", function (e) {
+		if (mouseDrag) {
 			e.stopPropagation();
 			e.stopImmediatePropagation();
 
@@ -95,16 +95,16 @@ export default function(cell, onRendered, success, cancel, editorParams){
 	});
 
 	//allow key based navigation
-	element.addEventListener("keydown", function(e){
-		switch(e.keyCode){
+	element.addEventListener("keydown", function (e) {
+		switch (e.keyCode) {
 			case 39: //right arrow
 				e.preventDefault();
-				bar.style.width = (bar.clientWidth + element.clientWidth/100) + "px";
+				bar.style.width = (bar.clientWidth + element.clientWidth / 100) + "px";
 				break;
 
 			case 37: //left arrow
 				e.preventDefault();
-				bar.style.width = (bar.clientWidth - element.clientWidth/100) + "px";
+				bar.style.width = (bar.clientWidth - element.clientWidth / 100) + "px";
 				break;
 
 			case 9: //tab
@@ -119,7 +119,7 @@ export default function(cell, onRendered, success, cancel, editorParams){
 		}
 	});
 
-	element.addEventListener("blur", function(){
+	element.addEventListener("blur", function () {
 		cancel();
 	});
 

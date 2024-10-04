@@ -131,6 +131,7 @@ export default class Popup extends CoreFeature {
 
 	show(origin, position) {
 
+		console.warn("show", origin);
 
 		var x, y, parentEl, parentOffset, coords;
 
@@ -182,6 +183,9 @@ export default class Popup extends CoreFeature {
 	}
 
 	_fitToScreen(x, y, parentEl, parentOffset, position) {
+
+
+
 		var scrollTop = this.container === document.body ? document.documentElement.scrollTop : this.container.scrollTop;
 
 		//move menu to start on right edge if it is too close to the edge of the screen
@@ -199,6 +203,17 @@ export default class Popup extends CoreFeature {
 
 		//move menu to start on bottom edge if it is too close to the edge of the screen
 		let offsetHeight = Math.max(this.container.offsetHeight, scrollTop ? this.container.scrollHeight : 0);
+
+		console.warn("fitToScreen", {
+			x: x,
+			y: y,
+			"this.element.offsetHeight": this.element.offsetHeight,
+			parentEl: parentEl,
+			parentOffset: parentOffset,
+			position: position,
+			offsetHeight: offsetHeight
+		});
+
 		if ((y + this.element.offsetHeight) > offsetHeight) {
 			if (parentEl) {
 				switch (position) {
@@ -207,13 +222,18 @@ export default class Popup extends CoreFeature {
 						break;
 
 					default:
+						console.warn("belefut");
 						this.element.style.top = (parseInt(this.element.style.top) - this.element.offsetHeight + parentEl.offsetHeight + 1) + "px";
+						break;
 				}
 
 			} else {
-				this.element.style.height = offsetHeight + "px";
+				this.element.style.top = (parseInt(this.element.style.top) - this.element.offsetHeight + 1) + "px";
+				//this.element.style.height = offsetHeight + "px";
 			}
 		}
+
+
 	}
 
 	isVisible() {
