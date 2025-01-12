@@ -128,6 +128,9 @@ export default class Edit {
 	}
 
 	_createInputElement() {
+
+		//console.warn("debug, belefut");
+
 		var attribs = this.params.elementAttributes;
 		var input = document.createElement("input");
 
@@ -164,8 +167,12 @@ export default class Edit {
 	}
 
 	_initializeParams(params) {
+
+
+		//console.warn("debug", params);
+
 		var valueKeys = ["values", "valuesURL", "valuesLookup"],
-		valueCheck;
+			valueCheck;
 
 		params = Object.assign({}, params);
 
@@ -267,7 +274,7 @@ export default class Edit {
 	_inputBlur(e) {
 		if (this.blurable) {
 			if (this.popup) {
-				this.popup.hide();
+				//this.popup.hide();
 			} else {
 				this._resolveValue(true);
 			}
@@ -547,6 +554,8 @@ export default class Edit {
 		} else {
 			return Promise.resolve(this._parseList(values));
 		}
+
+
 	}
 
 	_addPlaceholder(contents) {
@@ -597,8 +606,8 @@ export default class Edit {
 
 	_uniqueColumnValues(field) {
 		var output = {},
-		data = this.table.getData(this.params.valuesLookup),
-		column;
+			data = this.table.getData(this.params.valuesLookup),
+			column;
 
 		if (field) {
 			column = this.table.columnManager.getColumnByField(field);
@@ -654,12 +663,16 @@ export default class Edit {
 
 		this.data = data;
 
+		//console.warn("debug", this.data, this.initialValues);
+
 		return data;
 	}
 
 	_parseListItem(option, data, level) {
 
 		var item = {};
+
+		//console.warn("debug", option);
 
 		// <mormi-table add> - MT-245
 		if (!option) {
@@ -680,7 +693,7 @@ export default class Edit {
 			item = this._parseListGroup(option, level + 1);
 		} else {
 			item = {
-				label: option.label /* <mormi-table add - MT-252> */ ?? null /* </mormi-table add> */,
+				label: option.label /* <mormi-table add - DTE-252> */ ?? null /* </mormi-table add - DTE-252> */,
 				value: option.value,
 				itemParams: option.itemParams,
 				elementAttributes: option.elementAttributes,
@@ -691,12 +704,34 @@ export default class Edit {
 				original: option,
 			};
 
-			if (this.initialValues && this.initialValues.indexOf(option.value) > -1) {
-				this._chooseItem(item, true);
+			// console.warn("debug", {
+			// 	initialValues: this.initialValues,
+			// 	optionValue: option.value,
+			// 	indexOf: this.initialValues.indexOf(option.value),
+			// 	initialValuesJson: JSON.stringify(this.initialValues),
+			// 	optionValueJson: JSON.stringify(option.value)
+			// });
+
+			/* <mormi-table add - DTE-272 - initialValues contained a number array so option.value which was string could not parse> */
+			if (this.initialValues) {
+				const stringArray = this.initialValues.map(item => item.toString());
+				if (stringArray.indexOf(option.value.toString()) > -1) {
+					this._chooseItem(item, true);
+				}
 			}
+			/* </mormi-table add - DTE-272> */
+
+
+			// if (this.initialValues && this.initialValues.indexOf(option.value) > -1) {
+			// 	this._chooseItem(item, true);
+			// }
+
+
 		}
 
 		data.push(item);
+
+		//console.warn(data, option, item);
 	}
 
 	_parseListGroup(option, level) {
@@ -786,7 +821,7 @@ export default class Edit {
 
 	_filterOptions() {
 		var filterFunc = this.params.filterFunc || this._defaultFilterFunc,
-		term = this.input.value;
+			term = this.input.value;
 
 		if (term) {
 			this.filtered = true;
@@ -855,7 +890,7 @@ export default class Edit {
 
 	_buildItem(item) {
 		var el = item.element,
-		contents;
+			contents;
 
 		if (!this.filtered || item.visible) {
 
@@ -948,6 +983,7 @@ export default class Edit {
 	}
 
 	_styleItem(item) {
+
 		if (item && item.element) {
 			if (item.selected) {
 				item.element.classList.add("active");
@@ -955,6 +991,7 @@ export default class Edit {
 				item.element.classList.remove("active");
 			}
 		}
+
 	}
 
 	//////////////////////////////////////
