@@ -25,7 +25,7 @@ export default class Row extends CoreFeature {
 
 		this.created = false;
 
-		this.metadata = {}
+		this.metadata = {};
 
 		this.setData(data);
 	}
@@ -251,8 +251,8 @@ export default class Row extends CoreFeature {
 	//update the rows data
 	updateData(updatedData) {
 		var visible = this.element && Helpers.elVisible(this.element),
-			tempData = {},
-			newRowData;
+		tempData = {},
+		newRowData;
 
 		return new Promise((resolve, reject) => {
 

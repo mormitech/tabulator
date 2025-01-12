@@ -165,7 +165,7 @@ export default class Edit {
 
 	_initializeParams(params) {
 		var valueKeys = ["values", "valuesURL", "valuesLookup"],
-			valueCheck;
+		valueCheck;
 
 		params = Object.assign({}, params);
 
@@ -597,8 +597,8 @@ export default class Edit {
 
 	_uniqueColumnValues(field) {
 		var output = {},
-			data = this.table.getData(this.params.valuesLookup),
-			column;
+		data = this.table.getData(this.params.valuesLookup),
+		column;
 
 		if (field) {
 			column = this.table.columnManager.getColumnByField(field);
@@ -786,7 +786,7 @@ export default class Edit {
 
 	_filterOptions() {
 		var filterFunc = this.params.filterFunc || this._defaultFilterFunc,
-			term = this.input.value;
+		term = this.input.value;
 
 		if (term) {
 			this.filtered = true;
@@ -855,7 +855,7 @@ export default class Edit {
 
 	_buildItem(item) {
 		var el = item.element,
-			contents;
+		contents;
 
 		if (!this.filtered || item.visible) {
 

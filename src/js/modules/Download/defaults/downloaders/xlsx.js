@@ -5,12 +5,12 @@ export default function (list, options, setFileContents) {
 	XLSX = document.XLSX;
 
 	var self = this,
-		sheetName = options.sheetName || "Sheet1",
-		workbook = XLSX.utils.book_new(),
-		tableFeatures = new CoreFeature(this),
-		compression = 'compress' in options ? options.compress : true,
-		writeOptions = options.writeOptions || { bookType: 'xlsx', bookSST: true, compression },
-		output;
+	sheetName = options.sheetName || "Sheet1",
+	workbook = XLSX.utils.book_new(),
+	tableFeatures = new CoreFeature(this),
+	compression = 'compress' in options ? options.compress : true,
+	writeOptions = options.writeOptions || { bookType: 'xlsx', bookSST: true, compression },
+	output;
 
 	// <mormi-table replace from>	
 	//writeOptions.type = 'binary';
@@ -23,9 +23,9 @@ export default function (list, options, setFileContents) {
 
 	function generateSheet() {
 		var rows = [],
-			merges = [],
-			worksheet = {},
-			range = { s: { c: 0, r: 0 }, e: { c: (list[0] ? list[0].columns.reduce((a, b) => a + (b && b.width ? b.width : 1), 0) : 0), r: list.length } };
+		merges = [],
+		worksheet = {},
+		range = { s: { c: 0, r: 0 }, e: { c: (list[0] ? list[0].columns.reduce((a, b) => a + (b && b.width ? b.width : 1), 0) : 0), r: list.length } };
 
 		//parse row list
 		list.forEach((row, i) => {

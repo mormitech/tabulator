@@ -156,7 +156,7 @@ export default class Edit extends Module {
 
 	keybindingNavigateNext(e) {
 		var cell = this.currentCell,
-			newRow = this.options("tabEndNewRow");
+		newRow = this.options("tabEndNewRow");
 
 		if (cell) {
 			if (!this.navigateNext(cell, e)) {
@@ -503,7 +503,7 @@ export default class Edit extends Module {
 
 	clearEditor(cancel) {
 		var cell = this.currentCell,
-			cellEl;
+		cellEl;
 
 		this.invalidEdit = false;
 
@@ -553,7 +553,7 @@ export default class Edit extends Module {
 	bindEditor(cell) {
 		if (cell.column.modules.edit) {
 			var self = this,
-				element = cell.getElement(true);
+			element = cell.getElement(true);
 
 			this.updateCellClass(cell);
 			element.setAttribute("tabindex", 0);
@@ -620,10 +620,10 @@ export default class Edit extends Module {
 	focusScrollAdjust(cell) {
 		if (this.table.rowManager.getRenderMode() == "virtual") {
 			var topEdge = this.table.rowManager.element.scrollTop,
-				bottomEdge =
+			bottomEdge =
 					this.table.rowManager.element.clientHeight +
 					this.table.rowManager.element.scrollTop,
-				rowEl = cell.row.getElement();
+			rowEl = cell.row.getElement();
 
 			if (rowEl.offsetTop < topEdge) {
 				this.table.rowManager.element.scrollTop -= topEdge - rowEl.offsetTop;
@@ -635,10 +635,10 @@ export default class Edit extends Module {
 			}
 
 			var leftEdge = this.table.rowManager.element.scrollLeft,
-				rightEdge =
+			rightEdge =
 					this.table.rowManager.element.clientWidth +
 					this.table.rowManager.element.scrollLeft,
-				cellEl = cell.getElement();
+			cellEl = cell.getElement();
 
 			if (this.table.modExists("frozenColumns")) {
 				leftEdge += parseInt(this.table.modules.frozenColumns.leftMargin || 0);
@@ -690,13 +690,13 @@ export default class Edit extends Module {
 
 	edit(cell, e, forceEdit) {
 		var self = this,
-			allowEdit = true,
-			rendered = function () { },
-			element = cell.getElement(),
-			editFinished = false,
-			cellEditor,
-			component,
-			params;
+		allowEdit = true,
+		rendered = function () { },
+		element = cell.getElement(),
+		editFinished = false,
+		cellEditor,
+		component,
+		params;
 
 		//prevent editing if another cell is refusing to leave focus (eg. validation fail)
 
@@ -863,8 +863,8 @@ export default class Edit extends Module {
 
 	transformEmptyValues(value, cell) {
 		var mod = cell.column.modules.edit,
-			convert = mod.convertEmptyValues || this.convertEmptyValues,
-			checkFunc;
+		convert = mod.convertEmptyValues || this.convertEmptyValues,
+		checkFunc;
 
 		if (convert) {
 			checkFunc =

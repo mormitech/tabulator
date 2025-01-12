@@ -103,7 +103,7 @@ export default class Import extends Module {
 
 			input.addEventListener("change", (e) => {
 				var file = input.files[0],
-					reader = new FileReader();
+				reader = new FileReader();
 
 				this.dispatch("import-importing", input.files);
 				this.dispatchExternal("importImporting", input.files);
@@ -186,7 +186,7 @@ export default class Import extends Module {
 
 	structureArrayToColumns(parsedData) {
 		var data = [],
-			columns = this.table.getColumns();
+		columns = this.table.getColumns();
 
 		//remove first row if it is the column names
 		if (columns[0] && parsedData[0][0]) {

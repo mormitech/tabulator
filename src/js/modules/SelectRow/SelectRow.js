@@ -111,8 +111,8 @@ export default class SelectRow extends Module {
 
 	initializeRow(row) {
 		var self = this,
-			selectable = self.checkRowSelectability(row),
-			element = row.getElement();
+		selectable = self.checkRowSelectability(row),
+		element = row.getElement();
 
 		// trigger end of row selection
 		var endSelect = function () {
@@ -257,7 +257,7 @@ export default class SelectRow extends Module {
 	//select a number of rows
 	selectRows(rows) {
 		var changes = [],
-			rowMatch, change;
+		rowMatch, change;
 
 		switch (typeof rows) {
 			case "undefined":
@@ -353,7 +353,7 @@ export default class SelectRow extends Module {
 	//deselect a number of rows
 	deselectRows(rows, silent) {
 		var changes = [],
-			rowMatch, change;
+		rowMatch, change;
 
 		switch (typeof rows) {
 			case "undefined":
@@ -399,8 +399,8 @@ export default class SelectRow extends Module {
 	//deselect an individual row
 	_deselectRow(rowInfo, silent) {
 		var self = this,
-			row = self.table.rowManager.findRow(rowInfo),
-			index, element;
+		row = self.table.rowManager.findRow(rowInfo),
+		index, element;
 
 		if (row) {
 			index = self.selectedRows.findIndex(function (selectedRow) {
@@ -653,8 +653,8 @@ export default class SelectRow extends Module {
 	//deselect an individual row
 	_deselectRow_mode2(rowInfo, silent) {
 		var self = this,
-			row = self.table.rowManager.findRow(rowInfo),
-			index, element;
+		row = self.table.rowManager.findRow(rowInfo),
+		index, element;
 
 		if (row) {
 			index = self.selectedRows_mode2.findIndex(function (selectedRow) {
@@ -699,7 +699,7 @@ export default class SelectRow extends Module {
 	//deselect a number of rows
 	deselectRows_mode2(rows, silent) {
 		var changes = [],
-			rowMatch, change;
+		rowMatch, change;
 
 		switch (typeof rows) {
 			case "undefined":
@@ -745,7 +745,7 @@ export default class SelectRow extends Module {
 	//select a number of rows
 	selectRows_mode2(rows) {
 		var changes = [],
-			rowMatch, change;
+		rowMatch, change;
 
 		switch (typeof rows) {
 			case "undefined":
@@ -923,8 +923,8 @@ export default class SelectRow extends Module {
 	//deselect an individual row
 	_deselectRow_mode3(rowInfo, silent) {
 		var self = this,
-			row = self.table.rowManager.findRow(rowInfo),
-			index, element;
+		row = self.table.rowManager.findRow(rowInfo),
+		index, element;
 
 		if (row) {
 			index = self.selectedRows_mode3.findIndex(function (selectedRow) {
@@ -969,7 +969,7 @@ export default class SelectRow extends Module {
 	//deselect a number of rows
 	deselectRows_mode3(rows, silent) {
 		var changes = [],
-			rowMatch, change;
+		rowMatch, change;
 
 		switch (typeof rows) {
 			case "undefined":
@@ -1015,7 +1015,7 @@ export default class SelectRow extends Module {
 	//select a number of rows
 	selectRows_mode3(rows) {
 		var changes = [],
-			rowMatch, change;
+		rowMatch, change;
 
 		switch (typeof rows) {
 			case "undefined":

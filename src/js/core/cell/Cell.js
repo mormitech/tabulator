@@ -51,17 +51,17 @@ export default class Cell extends CoreFeature {
 
 	_configureCell() {
 		var element = this.element,
-			field = this.column.getField(),
-			vertAligns = {
-				top: "flex-start",
-				bottom: "flex-end",
-				middle: "center",
-			},
-			hozAligns = {
-				left: "flex-start",
-				right: "flex-end",
-				center: "center",
-			};
+		field = this.column.getField(),
+		vertAligns = {
+			top: "flex-start",
+			bottom: "flex-end",
+			middle: "center",
+		},
+		hozAligns = {
+			left: "flex-start",
+			right: "flex-end",
+			center: "center",
+		};
 
 		//set text alignment
 		element.style.textAlign = this.column.hozAlign;

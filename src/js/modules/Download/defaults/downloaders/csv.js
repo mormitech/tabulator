@@ -1,7 +1,7 @@
 export default function (list, options = {}, setFileContents) {
 	var delimiter = options.delimiter ? options.delimiter : ",",
-		fileContents = [],
-		headers = [];
+	fileContents = [],
+	headers = [];
 
 	list.forEach((row) => {
 		var item = [];
