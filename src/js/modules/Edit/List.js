@@ -714,7 +714,8 @@ export default class Edit {
 
 			/* <mormi-table add - DTE-272 - initialValues contained a number array so option.value which was string could not parse> */
 			if (this.initialValues && option.value) {
-				const stringArray = this.initialValues.map(item => item.toString());
+
+				const stringArray = this.initialValues.map(item => item?.toString() ?? "");
 				if (stringArray.indexOf(option.value.toString()) > -1) {
 					this._chooseItem(item, true);
 				}
