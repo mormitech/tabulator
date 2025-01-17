@@ -213,8 +213,8 @@ class Tabulator extends ModuleBinder {
 	//build tabulator element
 	_buildElement() {
 		var element = this.element,
-			options = this.options,
-			newElement;
+		options = this.options,
+		newElement;
 
 		if (element.tagName === "TABLE") {
 			this.originalElement = this.element;
@@ -270,7 +270,7 @@ class Tabulator extends ModuleBinder {
 	//initialize core systems and modules
 	_initializeTable() {
 		var element = this.element,
-			options = this.options;
+		options = this.options;
 
 		this.interactionMonitor.initialize();
 
@@ -540,7 +540,7 @@ class Tabulator extends ModuleBinder {
 	//update table data
 	updateOrAddData(data) {
 		var rows = [],
-			responses = 0;
+		responses = 0;
 
 		this.initGuard();
 
@@ -862,7 +862,7 @@ class Tabulator extends ModuleBinder {
 
 	moveColumn(from, to, after) {
 		var fromColumn = this.columnManager.findColumn(from),
-			toColumn = this.columnManager.findColumn(to);
+		toColumn = this.columnManager.findColumn(to);
 
 		this.initGuard();
 

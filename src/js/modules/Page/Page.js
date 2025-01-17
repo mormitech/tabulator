@@ -116,8 +116,8 @@ export default class Page extends Module {
 
 	rowAddingPosition(row, top) {
 		var rowManager = this.table.rowManager,
-			displayRows = rowManager.getDisplayRows(),
-			index;
+		displayRows = rowManager.getDisplayRows(),
+		index;
 
 		if (top) {
 			if (displayRows.length) {
@@ -333,7 +333,7 @@ export default class Page extends Module {
 
 	initializePageCounter() {
 		var counter = this.table.options.paginationCounter,
-			pageCounter = null;
+		pageCounter = null;
 
 		if (counter) {
 			if (typeof counter === "function") {
@@ -792,10 +792,10 @@ export default class Page extends Module {
 	//return appropriate rows for current page
 	getRows(data) {
 		var actualRowPageSize = 0,
-			output,
-			start,
-			end,
-			actualStartRow;
+		output,
+		start,
+		end,
+		actualStartRow;
 
 		var actualRows = data.filter((row) => {
 			return row.type === "row";

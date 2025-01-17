@@ -131,7 +131,7 @@ export default class Popup extends CoreFeature {
 
 	show(origin, position) {
 
-		console.warn("show", origin);
+		//console.warn("show", origin);
 
 		var x, y, parentEl, parentOffset, coords;
 
@@ -204,15 +204,15 @@ export default class Popup extends CoreFeature {
 		//move menu to start on bottom edge if it is too close to the edge of the screen
 		let offsetHeight = Math.max(this.container.offsetHeight, scrollTop ? this.container.scrollHeight : 0);
 
-		console.warn("fitToScreen", {
-			x: x,
-			y: y,
-			"this.element.offsetHeight": this.element.offsetHeight,
-			parentEl: parentEl,
-			parentOffset: parentOffset,
-			position: position,
-			offsetHeight: offsetHeight
-		});
+		// console.warn("fitToScreen", {
+		// 	x: x,
+		// 	y: y,
+		// 	"this.element.offsetHeight": this.element.offsetHeight,
+		// 	parentEl: parentEl,
+		// 	parentOffset: parentOffset,
+		// 	position: position,
+		// 	offsetHeight: offsetHeight
+		// });
 
 		if ((y + this.element.offsetHeight) > offsetHeight) {
 			if (parentEl) {

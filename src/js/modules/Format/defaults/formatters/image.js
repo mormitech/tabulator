@@ -1,6 +1,6 @@
 export default function (cell, formatterParams, onRendered) {
 	var el = document.createElement("img"),
-		src = cell.getValue();
+	src = cell.getValue();
 
 	if (formatterParams.urlPrefix) {
 		src = formatterParams.urlPrefix + cell.getValue();
@@ -10,19 +10,19 @@ export default function (cell, formatterParams, onRendered) {
 	if (formatterParams.onClick) {
 		el.onclick = (event) => {
 			formatterParams.onClick(event, cell);
-		}
+		};
 	}
 
 	if (formatterParams.onMouseDown) {
 		el.onmousedown = (event) => {
 			formatterParams.onMouseDown(event, cell);
-		}
+		};
 	}
 
 	if (formatterParams.onMouseUp) {
 		el.onmouseup = (event) => {
 			formatterParams.onMouseUp(event, cell);
-		}
+		};
 	}
 	// </mormi-table add>
 

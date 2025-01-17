@@ -1,13 +1,13 @@
 //input element
 export default function (cell, onRendered, success, cancel, editorParams) {
 	var inputFormat = editorParams.format,
-		vertNav = editorParams.verticalNavigation || "editor",
-		DT = inputFormat ? (window.DateTime || luxon.DateTime) : null,
-		newDatetime;
+	vertNav = editorParams.verticalNavigation || "editor",
+	DT = inputFormat ? (window.DateTime || luxon.DateTime) : null,
+	newDatetime;
 
 	//create and style input
 	var cellValue = cell.getValue(),
-		input = document.createElement("input");
+	input = document.createElement("input");
 
 	input.type = "datetime-local";
 	input.style.padding = "4px";
@@ -59,7 +59,7 @@ export default function (cell, onRendered, success, cancel, editorParams) {
 
 	function onChange() {
 		var value = input.value,
-			luxDateTime;
+		luxDateTime;
 
 		if (((cellValue === null || typeof cellValue === "undefined") && value !== "") || value !== cellValue) {
 
